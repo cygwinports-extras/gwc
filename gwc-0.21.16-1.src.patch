@@ -1,0 +1,48 @@
+--- origsrc/gwc-0.21-16/audio_util.c	2011-03-16 21:42:30.000000000 -0500
++++ src/gwc-0.21-16/audio_util.c	2011-07-03 02:13:14.540546800 -0500
+@@ -38,6 +38,7 @@
+ #include "gwc.h"
+ 
+ #ifdef HAVE_MP3
++#define MPG123_NO_LARGENAME
+ #include "mpg123.h"
+ #endif
+ 
+--- origsrc/gwc-0.21-16/fmtheaders.h	2005-02-09 22:13:14.000000000 -0600
++++ src/gwc-0.21-16/fmtheaders.h	2011-07-03 01:40:56.677456600 -0500
+@@ -31,7 +31,7 @@
+ #define DATALEN(bp)	((u_long)(bp.BlockLen[0]) | \
+                          ((u_long)(bp.BlockLen[1]) << 8) | \
+                          ((u_long)(bp.BlockLen[2]) << 16) )
+-# ifndef MAC_OS_X
++# if !defined MAC_OS_X && !defined __CYGWIN__
+ # ifndef __u_char_defined
+ typedef __u_char u_char;
+ typedef __u_short u_short;
+@@ -42,7 +42,7 @@ typedef __u_quad_t u_quad_t;
+ typedef __fsid_t fsid_t;
+ #  define __u_char_defined
+ # endif
+-# endif /* MAC_OS_X*/
++# endif /* !MAC_OS_X && !__CYGWIN__ */
+ 
+ typedef struct vochead {
+   u_char  Magic[20];	/* must be VOC_MAGIC */
+--- origsrc/gwc-0.21-16/gwc.c	2011-03-16 22:18:08.000000000 -0500
++++ src/gwc-0.21-16/gwc.c	2011-07-03 02:32:23.629493000 -0500
+@@ -2848,6 +2848,7 @@ int main(int argc, char *argv[])
+ 
+     int i;
+ 
++#ifndef __CYGWIN__
+     /* *************************************************************** */
+     /* Lindsay Harris addition for SMP operations  */
+     /*
+@@ -2884,6 +2885,7 @@ int main(int argc, char *argv[])
+ 	    printf("New stack limit: %d bytes\n", (int)rl.rlim_cur) ;
+ 	}
+     }
++#endif
+ 
+     /* This is called in all GTK applications. Arguments are parsed
+      * from the command line and are returned to the application. */

@@ -1,0 +1,24 @@
+
+
+HOMEPAGE="http://gwc.sourceforge.net/"
+SRC_URI="mirror://sourceforge/gwc/${PN}-${PV[1]}.${PV[2]}-${PV[3]}.tgz"
+SRC_DIR="${PN}-${PV[1]}.${PV[2]}-${PV[3]}"
+
+src_compile() {
+#	lndirs
+	cd ${B}
+	rm -f meschach/macheps meschach/maxint
+	export PATH="${B}/meschach:$PATH"
+#	cygconf --disable-alsa --enable-mp3 --enable-ogg
+#	cygmake -j1 # CPPFLAGS="-DMPG123_NO_LARGENAME"
+	env | sort
+}
+
+src_install() {
+	cd ${B}
+	cyginstall \
+		BINDIR=${D}/usr/bin \
+		DOCDIR=${D}/usr/share/doc/gwc \
+		HELPDIR=${D}/usr/share/gnome/help/gnome_wave_cleaner \
+		pixmapdir=${D}/usr/share/pixmaps
+}
